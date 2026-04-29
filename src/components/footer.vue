@@ -33,7 +33,7 @@ export default {
   flex-wrap: wrap;
   gap: 2rem;
   padding: 2rem;
-  background: #1E3A5F;
+  background: #9b672b;
   color: #ffffff;
 }
 
