@@ -1,8 +1,8 @@
 <template>
   <main class="inventory-container">
     <header>
-      <h1>Controle de Estoque: EPI</h1>
-      <p>Gerencie EPis saída e validade dos equipamentos de segurança.</p>
+      <h1>Controle e estoque de EPIs</h1>
+      <p>Gerencie saída e validade dos equipamentos de segurança.</p>
     </header>
 
     <section class="alerts" aria-live="polite">
@@ -13,11 +13,11 @@
 
     <div class="dashboard-grid">
       <section class="card" aria-labelledby="form-title">
-        <h2 id="form-title">Cadastrar Novo Lote</h2>
+        <h2 id="form-title">Cadastrar novo lote</h2>
         <form @submit.prevent="cadastrarEPI">
           <div class="field">
             <label for="descricao">Descrição do EPI:</label>
-            <input type="text" id="descricao" v-model="form.descricao" placeholder="Ex: Luva de Raspa" required />
+            <input type="text" id="descricao" v-model="form.descricao" placeholder="Ex: Protetor auricular" required />
           </div>
 
           <div class="grid-inputs">

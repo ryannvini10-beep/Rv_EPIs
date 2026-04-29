@@ -19,7 +19,7 @@
               type="text" 
               id="nome" 
               v-model="novoFuncionario.nome" 
-              placeholder="Ex: João Silva" 
+              placeholder="Ex: Gustavo Henrique" 
               required 
             />
           </div>
@@ -30,7 +30,7 @@
               type="text" 
               id="cargo" 
               v-model="novoFuncionario.cargo" 
-              placeholder="Ex: Desenvolvedor Front-end" 
+              placeholder="Ex: Apontador" 
               required 
             />
           </div>
@@ -41,7 +41,7 @@
               type="email" 
               id="email" 
               v-model="novoFuncionario.email" 
-              placeholder="email@empresa.com" 
+              placeholder="name@empresa.com" 
               required 
             />
           </div>
@@ -87,7 +87,7 @@ import { ref, reactive } from 'vue';
 
 // Estado da lista de funcionários
 const funcionarios = ref([
-  { nome: 'Ana Souza', cargo: 'Gerente de Projetos', email: 'ana@empresa.com' }
+  { nome: 'Renato Augusto', cargo: 'Gerente de Projetos', email: 'Renato@empresa.com' }
 ]);
 
 // Estado do formulário (reativo)

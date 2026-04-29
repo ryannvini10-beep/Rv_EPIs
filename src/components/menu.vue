@@ -10,11 +10,9 @@
 
     <nav aria-label="Menu principal">
       <ul class="navbar__lista">
-        <li><RouterLink to="/" class="navbar__link">Dashboard</RouterLink></li>
-        <li><RouterLink to="/colaboradores" class="navbar__link">Colaboradores</RouterLink></li>
+        <li><RouterLink to="/colaboradores" class="navbar__link">Funcionarios</RouterLink></li>
         <li><RouterLink to="/equipamentos" class="navbar__link">Equipamentos</RouterLink></li>
         <li><RouterLink to="/entregas" class="navbar__link">Entregas</RouterLink></li>
-        <li><RouterLink to="/relatorios" class="navbar__link">Relatórios</RouterLink></li>
       </ul>
     </nav>
 

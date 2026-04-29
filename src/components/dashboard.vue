@@ -7,7 +7,7 @@
       <!-- Logo/TÃ­tulo do sistema -->
       <h1 class="logo">
         <i class="fas fa-shield-alt"></i>
-        Sistema EPI
+        EPIs beep
       </h1>
 
       <!-- Menu de navegaÃ§Ã£o -->
@@ -16,7 +16,7 @@
 
  <RouterLink to="/dashboard/cadastro" class="menu-item" active-class="active">
     <i class="fas fa-chart-bar"></i>
-    <span>Funcionarios</span>
+    <span>Cadastre o colaborador</span>
   </RouterLink>
   
 

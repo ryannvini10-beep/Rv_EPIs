@@ -4,8 +4,8 @@
     <!-- Caixa do formulÃ¡rio -->
     <div class="form-box">
       <!-- TÃ­tulo da pÃ¡gina -->
-      <h1 class="titulo">Sistema de EPI</h1>
-      <p class="subtitulo">Faça login para acessar o sistema</p>
+      <h1 class="titulo">EPIs beep</h1>
+      <p class="subtitulo">Faça o login para acessar </p>
 
       <!-- FormulÃ¡rio de login -->
       <!-- @submit.prevent="fazerLogin" = quando o usuÃ¡rio clica em "Entrar", chama a funÃ§Ã£o fazerLogin() -->
@@ -19,7 +19,7 @@
             id="email"
             v-model="email"
             type="email"
-            placeholder="seu@email.com"
+            placeholder="username@email.com"
             class="input"
             required
           />
@@ -63,7 +63,7 @@
 
       <!-- Dica para o usuÃ¡rio -->
       <p class="dica">
-        <strong>Dica:</strong> Use um e-mail e senha validos cadastrados no Supabase.
+        <strong>Atenção:</strong> Use um e-mail e senha validos cadastrados no Supabase.
       </p>
     </div>
   </div>

@@ -2,7 +2,7 @@
   <footer class="footer">
     <div class="footer__contato">
       <h4>Contato</h4>
-      <p>📧 suporte@epi.com</p>
+      <p>📧 ryannvini10@gmail.com</p>
     </div>
 
     <div class="footer__redes">
@@ -10,12 +10,11 @@
       <div class="footer__redes-links">
         <a href="https://br.linkedin.com/" class="footer__link">LinkedIn</a>
         <a href="https://www.instagram.com/" class="footer__link">Instagram</a>
-        <a href="https://pt-br.facebook.com/" class="footer__link">Facebook</a>
       </div>
     </div>
 
     <div class="footer__copy">
-      <p>© 2026 Sistema de Gestão de EPI — Todos os direitos reservados</p>
+      <p>© 2026 Sistema em gestão de EPIs — Todos os direitos reservados</p>
     </div>
   </footer>
 </template>

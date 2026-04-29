@@ -5,7 +5,7 @@
     <main class="home">
       <section class="home__hero">
         <div class="home__hero-texto">
-          <h1>Sistema de Gestão de EPI</h1>
+          <h1>Sistema EPIs beep</h1>
           <p>Gerencie os EPIs dos seus colaboradores de forma simples e segura.</p>
         </div>
 
@@ -21,25 +21,25 @@
       <section class="home__cards">
         <div class="card">
           <span class="card__icone">🪖</span>
-          <span class="card__numero">124</span>
-          <span class="card__label">Total de EPIs</span>
+          <span class="card__numero">+100</span>
+          <span class="card__label">Quantidade de EPIs</span>
         </div>
 
         <div class="card">
           <span class="card__icone">👷</span>
-          <span class="card__numero">48</span>
+          <span class="card__numero">60</span>
           <span class="card__label">Colaboradores</span>
         </div>
 
         <div class="card">
           <span class="card__icone">📦</span>
-          <span class="card__numero">89</span>
+          <span class="card__numero">50</span>
           <span class="card__label">Entregas realizadas</span>
         </div>
 
         <div class="card card--alerta">
           <span class="card__icone">⚠️</span>
-          <span class="card__numero">7</span>
+          <span class="card__numero">8</span>
           <span class="card__label">EPIs vencendo</span>
         </div>
       </section>
@@ -50,25 +50,19 @@
           <div class="passo">
             <span class="passo__numero">1</span>
             <h3>Cadastre os colaboradores</h3>
-            <p>Acesse o menu Colaboradores e registre cada funcionário com seus dados.</p>
+            <p>Acesse o menu "Colaboradores" e registre cada funcionário com seus dados.</p>
           </div>
 
           <div class="passo">
             <span class="passo__numero">2</span>
             <h3>Cadastre os EPIs</h3>
-            <p>Vá em Equipamentos e adicione os EPIs disponíveis com validade e quantidade.</p>
+            <p>Vá em "Equipamentos" e adicione os EPIs disponíveis com validade e quantidade.</p>
           </div>
 
           <div class="passo">
             <span class="passo__numero">3</span>
             <h3>Registre as entregas</h3>
-            <p>Em Entregas, vincule o EPI ao colaborador e registre a data de entrega.</p>
-          </div>
-
-          <div class="passo">
-            <span class="passo__numero">4</span>
-            <h3>Acompanhe os relatórios</h3>
-            <p>Monitore validades e histórico de entregas pelo menu Relatórios.</p>
+            <p>Em "Entregas", vincule o EPI ao colaborador e registre a data de entrega.</p>
           </div>
         </div>
       </section>

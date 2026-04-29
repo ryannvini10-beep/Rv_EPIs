@@ -1,8 +1,8 @@
 <template>
   <main class="delivery-container">
     <header>
-      <h1>Registro de Entrega de EPI</h1>
-      <p>Formalize a entrega de equipamentos de proteção aos colaboradores.</p>
+      <h1>Registro de Entrega de EPIs</h1>
+      <p>Formalize a entrega do equipamentos de proteção aos colaboradores.</p>
     </header>
 
     <div class="delivery-grid">
