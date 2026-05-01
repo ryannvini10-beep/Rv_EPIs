@@ -1,182 +1,256 @@
 <template>
-  <main class="container">
-    <header>
-      <h1>Gestão de Funcionarios</h1>
-      <p>Cadastre e gerencie os membros da sua equipe.</p>
+  <div class="layout-container">
+    
+    <header class="header-section">
+      <h1>Controle de Efetivo</h1>
+      <p>Gerencie o cadastro de colaboradores e organize por setores.</p>
     </header>
 
-    <hr />
+    <main class="content">
+      <section class="card-form">
+        <div class="card-header">
+          <h3>{{ editandoId ? 'Alterar Registro' : 'Novo Funcionário' }}</h3>
+        </div>
+        
+        <form @submit.prevent="salvar" class="main-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="nome">Nome Completo</label>
+              <input v-model="form.nome" type="text" id="nome" placeholder="Digite o nome" required>
+            </div>
+            <div class="form-group">
+              <label for="cpf">Nº do cpf</label>
+              <input v-model="form.cpf" type="text" id="cpf" placeholder="Ex: 51908797878" required>
+            </div>
+          </div>
 
-    <section aria-labelledby="form-title">
-      <h2 id="form-title">Novo Cadastro</h2>
-      <form @submit.prevent="adicionarFuncionario">
-        <fieldset>
-          <legend>Dados Pessoais e Profissionais</legend>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="email">email</label>
+              <input v-model="form.email" type="text" id="email" placeholder="Ex: rodrigogarro8@gmail.com" required>
+            </div>
+            <div class="form-group">
+              <label for="cargo">Cargo</label>
+              <input v-model="form.cargo" type="text" id="cargo" placeholder="Ex: analista de dados" required>
+            </div>
+          </div>
           
-          <div class="form-group">
-            <label for="nome">Nome Completo:</label>
-            <input 
-              type="text" 
-              id="nome" 
-              v-model="novoFuncionario.nome" 
-              placeholder="Ex: Gustavo Henrique" 
-              required 
-            />
+          <div class="action-bar">
+            <button type="submit" class="btn btn-primary">
+              {{ editandoId ? 'Atualizar Dados' : 'Finalizar Cadastro' }}
+            </button>
+            <button v-if="editandoId" type="button" @click="cancelarEdicao" class="btn btn-outline">
+              Cancelar
+            </button>
           </div>
+        </form>
+      </section>
 
-          <div class="form-group">
-            <label for="cargo">Cargo:</label>
-            <input 
-              type="text" 
-              id="cargo" 
-              v-model="novoFuncionario.cargo" 
-              placeholder="Ex: Apontador" 
-              required 
-            />
-          </div>
+      <section class="card-table">
+        <table class="styled-table">
+          <thead>
+            <tr>
+              <th>Colaborador</th>
+              <th>Matrícula</th>
+              <th>Setor / Cargo</th>
+              <th class="text-center">Gerenciar</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="f in funcionarios" :key="f.id">
+              <td><span class="text-bold">{{ f.nome }}</span></td>
+              <td>{{ f.matricula }}</td>
+              <td>
+                <span class="badge">{{ f.setor }}</span>
+                <span class="cargo-text">{{ f.cargo }}</span>
+              </td>
+              <td class="text-center">
+                <button @click="prepararEdicao(f)" class="btn-action edit">Editar</button>
+                <button @click="excluir(f.id)" class="btn-action delete">Excluir</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
 
-          <div class="form-group">
-            <label for="email">E-mail:</label>
-            <input 
-              type="email" 
-              id="email" 
-              v-model="novoFuncionario.email" 
-              placeholder="name@empresa.com" 
-              required 
-            />
-          </div>
-
-          <button type="submit" class="btn-primary">Cadastrar Funcionário</button>
-        </fieldset>
-      </form>
-    </section>
-
-    <hr />
-
-    <section aria-labelledby="list-title">
-      <h2 id="list-title">Funcionários Ativos</h2>
-      
-      <table v-if="funcionarios.length > 0">
-        <thead>
-          <tr>
-            <th scope="col">Nome</th>
-            <th scope="col">Cargo</th>
-            <th scope="col">E-mail</th>
-            <th scope="col">Ações</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(func, index) in funcionarios" :key="index">
-            <td>{{ func.nome }}</td>
-            <td>{{ func.cargo }}</td>
-            <td>{{ func.email }}</td>
-            <td>
-              <button @click="removerFuncionario(index)" class="btn-danger">Excluir</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      
-      <p v-else>Nenhum funcionário cadastrado no momento.</p>
-    </section>
-  </main>
+  </div>
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue';
+import { ref, reactive, onMounted } from 'vue';
+import { supabase } from '../composables/useSupabase';
+const { supabase } = useSupabase();
 
-// Estado da lista de funcionários
-const funcionarios = ref([
-  { nome: 'Renato Augusto', cargo: 'Gerente de Projetos', email: 'Renato@empresa.com' }
-]);
 
-// Estado do formulário (reativo)
-const novoFuncionario = reactive({
-  nome: '',
-  cargo: '',
-  email: ''
+// Variáveis que controlam os dados na tela
+const funcionarios = ref([]);
+const editandoId = ref(null);
+const form = reactive({ 
+  nome: '', 
+  email: '', 
+  cpf: '', 
+  cargo: '' 
 });
 
-// Método para adicionar funcionário
-const adicionarFuncionario = () => {
-  funcionarios.value.push({ ...novoFuncionario });
-  
-  // Limpar formulário
-  novoFuncionario.nome = '';
-  novoFuncionario.cargo = '';
-  novoFuncionario.email = '';
-};
-
-// Método para remover funcionário
-const removerFuncionario = (index) => {
-  if (confirm('Deseja realmente excluir este funcionário?')) {
-    funcionarios.value.splice(index, 1);
+// Busca os dados do Supabase
+const carregar = async () => {
+  const { data, error } = await supabase.from('funcionarios').select('*').order('nome');
+  if (error) {
+    console.error("Erro ao carregar:", error.message);
+  } else {
+    funcionarios.value = data || [];
   }
 };
+
+// Salva um novo ou atualiza um existente
+const salvar = async () => {
+  if (editandoId.value) {
+    // Modo de Edição (Update)
+    await supabase.from('funcionarios').update(form).eq('id', editandoId.value);
+  } else {
+    // Modo de Criação (Insert)
+    await supabase.from('funcionarios').insert([form]);
+  }
+  cancelarEdicao();
+  carregar();
+};
+
+// Prepara o formulário para edição ao clicar no botão
+const prepararEdicao = (f) => {
+  editandoId.value = f.id;
+  Object.assign(form, { 
+    nome: f.nome, 
+    matricula: f.matricula, 
+    setor: f.setor, 
+    cargo: f.cargo 
+  });
+};
+
+// Deleta um registro
+const excluir = async (id) => {
+  if (confirm('Deseja realmente remover este registro?')) {
+    await supabase.from('funcionarios').delete().eq('id', id);
+    carregar();
+  }
+};
+
+// Limpa o formulário e sai do modo de edição
+const cancelarEdicao = () => {
+  editandoId.value = null;
+  Object.assign(form, { nome: '', matricula: '', setor: '', cargo: '' });
+};
+
+// Inicia a busca de dados assim que a tela abre
+onMounted(carregar);
 </script>
 
 <style scoped>
-.container {
-  max-width: 800px;
+ 
+.layout-container {
+  max-width: 1000px;
   margin: 0 auto;
-  padding: 20px;
-  font-family: sans-serif;
+  padding: 40px 20px;
+  background-color: #f8fafc;
+  min-height: 100vh;
 }
 
-.form-group {
-  margin-bottom: 1rem;
-  display: flex;
-  flex-direction: column;
+.header-section { margin-bottom: 30px; }
+.header-section h1 { color: #0f172a; font-size: 1.8rem; }
+.header-section p { color: #64748b; }
+
+/* Cards */
+.card-form, .card-table {
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  margin-bottom: 30px;
+  overflow: hidden;
 }
 
-label {
-  font-weight: bold;
-  margin-bottom: 5px;
+.card-header {
+  background-color: #f8fafc;
+  padding: 15px 24px;
+  border-bottom: 1px solid #e2e8f0;
 }
+
+.main-form { padding: 24px; }
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.form-group { display: flex; flex-direction: column; gap: 8px; }
+
+label { font-size: 0.85rem; font-weight: 700; color: #475569; }
 
 input {
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-fieldset {
-  border: 1px solid #ddd;
-  padding: 20px;
-  border-radius: 8px;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-}
-
-th, td {
-  text-align: left;
   padding: 12px;
-  border-bottom: 1px solid #eee;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 1rem;
 }
 
-.btn-primary {
-  background-color: #42b983;
-  color: white;
-  padding: 10px 15px;
+input:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+}
+
+/* Botões Estilizados */
+.action-bar { display: flex; gap: 12px; }
+.btn { padding: 12px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; }
+.btn-primary { background: #2563eb; color: white; border: none; }
+.btn-outline { background: white; color: #64748b; border: 1px solid #cbd5e1; }
+
+/* Tabela Profissional */
+.styled-table { width: 100%; border-collapse: collapse; }
+.styled-table th {
+  background-color: #f1f5f9;
+  padding: 16px 24px;
+  text-align: left;
+  font-size: 0.75rem;
+  color: #64748b;
+  text-transform: uppercase;
+}
+
+.styled-table td {
+  padding: 16px 24px;
+  border-top: 1px solid #f1f5f9;
+  font-size: 0.95rem;
+}
+
+.text-bold { font-weight: 600; color: #1e293b; }
+
+.badge {
+  background: #dcfce7;
+  color: #166534;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  margin-right: 10px;
+}
+
+.cargo-text { color: #64748b; font-size: 0.85rem; }
+
+/* Ações na Tabela */
+.btn-action {
+  background: none;
   border: none;
-  border-radius: 4px;
+  font-weight: 700;
   cursor: pointer;
 }
 
-.btn-danger {
-  background-color: #ff5252;
-  color: white;
-  padding: 5px 10px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
+.edit { color: #2563eb; margin-right: 15px; }
+.delete { color: #be123c; }
+.text-center { text-align: center; }
 
-button:hover {
-  opacity: 0.8;
+@media (max-width: 600px) {
+  .form-row { grid-template-columns: 1fr; }
 }
 </style>

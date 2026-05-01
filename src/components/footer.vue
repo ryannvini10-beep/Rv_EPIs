@@ -33,26 +33,26 @@ export default {
   flex-wrap: wrap;
   gap: 2rem;
   padding: 2rem;
-  background: #9b672b;
+  background: #217539;
   color: #ffffff;
 }
 
 .footer h4 {
   font-size: 14px;
   margin: 0 0 10px;
-  color: #F97316;
+  color: #ffffff;
 }
 
 .footer p,
 .footer a {
   font-size: 13px;
-  color: #cbd5e1;
+  color: #ffffff;
   text-decoration: none;
   margin: 0;
 }
 
 .footer a:hover {
-  color: #F97316;
+  color: #217539;
 }
 
 .footer__redes-links {
@@ -63,7 +63,7 @@ export default {
 .footer__copy {
   width: 100%;
   text-align: center;
-  border-top: 1px solid #2d4f7c;
+  border-top: 1px solid #ffffff;
   padding-top: 1rem;
 }
 </style>

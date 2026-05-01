@@ -2,19 +2,11 @@
   <header class="navbar">
     <div class="navbar__marca">
       <img
-        src="../assets/logo_epi.png"
+        src="../assets/logo_epibeep.png"
         alt="Logo EPI"
         class="navbar__logo"
       />
     </div>
-
-    <nav aria-label="Menu principal">
-      <ul class="navbar__lista">
-        <li><RouterLink to="/colaboradores" class="navbar__link">Funcionarios</RouterLink></li>
-        <li><RouterLink to="/equipamentos" class="navbar__link">Equipamentos</RouterLink></li>
-        <li><RouterLink to="/entregas" class="navbar__link">Entregas</RouterLink></li>
-      </ul>
-    </nav>
 
     <RouterLink to="/login" class="navbar__login">
       <button type="button" class="navbar__btn">Entrar</button>
@@ -55,7 +47,7 @@ export default {
 .navbar__lista {
   display: flex;
   align-items: center;
-  gap: 2px;
+  gap: 5px;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -67,7 +59,7 @@ export default {
   border-radius: 7px;
   font-size: 13.5px;
   font-weight: 500;
-  color: #6b7280;
+  color: #000000;
   text-decoration: none;
   letter-spacing: -0.01em;
   transition: background 0.15s, color 0.15s;
@@ -75,8 +67,8 @@ export default {
 }
 
 .navbar__link:hover {
-  background: #fef3ea;
-  color: #c2500a;
+  background: #898e96;
+  color: #000000;
 }
 
 .navbar__link.router-link-active {
@@ -94,7 +86,7 @@ export default {
   padding: 7px 18px;
   border-radius: 8px;
   border: none;
-  background: #ea5b0c;
+  background: #217539;
   color: #ffffff;
   font-size: 13.5px;
   font-weight: 600;
@@ -104,7 +96,7 @@ export default {
 }
 
 .navbar__btn:hover {
-  background: #d14e09;
+  background: #000000;
 }
 
 .navbar__btn:active {

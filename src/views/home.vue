@@ -11,7 +11,7 @@
 
         <div class="home__hero-imagem">
           <img
-            src="../assets/img1.png"
+            src="../assets/img2.jpg"
             alt="Ilustração de gestão de EPI"
             class="home__hero-img"
           />
@@ -45,17 +45,17 @@
       </section>
 
       <section class="home__instrucoes">
-        <h2 class="home__instrucoes-titulo">Como usar o sistema</h2>
+        <h2 class="home__instrucoes-titulo">Para facilitar o seu acesso, siga as orientações abaixo:</h2>
         <div class="home__passos">
           <div class="passo">
             <span class="passo__numero">1</span>
-            <h3>Cadastre os colaboradores</h3>
+            <h3>Para cadastrar os colaboradores</h3>
             <p>Acesse o menu "Colaboradores" e registre cada funcionário com seus dados.</p>
           </div>
 
           <div class="passo">
             <span class="passo__numero">2</span>
-            <h3>Cadastre os EPIs</h3>
+            <h3>Cadastro de EPIs</h3>
             <p>Vá em "Equipamentos" e adicione os EPIs disponíveis com validade e quantidade.</p>
           </div>
 
@@ -109,15 +109,15 @@ export default {
 }
 
 .home__hero-texto h1 {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #1e3a5f;
-  margin-bottom: 0.5rem;
+  font-size: 3rem;
+  font-weight: 5;
+  color: #1daa45;
+  margin-bottom: 2rem;
 }
 
 .home__hero-texto p {
-  font-size: 1rem;
-  color: #6b7280;
+  font-size: 1.2rem;
+  color: #000000;
 }
 
 .home__hero-imagem {
@@ -125,9 +125,10 @@ export default {
 }
 
 .home__hero-img {
-  width: 320px;
+  width: 40%;
   max-width: 100%;
-  border-radius: 12px;
+  border-radius: 150px;
+   margin-left: 200px;
 }
 
 /* ───── Cards ───── */
@@ -178,16 +179,16 @@ export default {
 }
 
 .home__instrucoes-titulo {
-  font-size: 1.4rem;
-  font-weight: 700;
-  color: #1e3a5f;
-  margin-bottom: 1.5rem;
+  font-size: 1.3rem;
+  font-weight: 3;
+  color: #000000;
+  margin-bottom: 2rem;
 }
 
 .home__passos {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1.5rem;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 5rem;
 }
 
 .passo {
@@ -205,7 +206,7 @@ export default {
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: #ea5b0c;
+  background: #217539;
   color: #ffffff;
   font-weight: 700;
   font-size: 0.9rem;
