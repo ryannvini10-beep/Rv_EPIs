@@ -59,9 +59,9 @@
           <tbody>
             <tr v-for="f in funcionarios" :key="f.id">
               <td><span class="text-bold">{{ f.nome }}</span></td>
-              <td>{{ f.matricula }}</td>
+              <td>{{ f.cpf }}</td>
               <td>
-                <span class="badge">{{ f.setor }}</span>
+                <span class="badge">{{ f.email }}</span>
                 <span class="cargo-text">{{ f.cargo }}</span>
               </td>
               <td class="text-center">
@@ -79,7 +79,7 @@
 
 <script setup>
 import { ref, reactive, onMounted } from 'vue';
-import { supabase } from '../composables/useSupabase';
+import { useSupabase } from '../composables/useSupabase';
 const { supabase } = useSupabase();
 
 

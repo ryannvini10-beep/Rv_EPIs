@@ -8,8 +8,8 @@
     <div class="footer__redes">
       <h4>Redes sociais</h4>
       <div class="footer__redes-links">
-        <a href="https://br.linkedin.com/" class="footer__link">LinkedIn</a>
-        <a href="https://www.instagram.com/" class="footer__link">Instagram</a>
+        <a href="https://br.linkedin.com/" class="footer__link"></a>
+        <a href="https://www.instagram.com/" class="footer__link"></a>
       </div>
     </div>
 

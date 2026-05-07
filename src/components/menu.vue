@@ -2,7 +2,7 @@
   <header class="navbar">
     <div class="navbar__marca">
       <img
-        src="../assets/logo_epibeep.png"
+        src="../assets/Logo_EPIatualizada.png"
         alt="Logo EPI"
         class="navbar__logo"
       />
@@ -39,7 +39,7 @@ export default {
 }
 
 .navbar__logo {
-  height: 50px;
+  height: 60px;
   width: auto;
   display: block;
 }
