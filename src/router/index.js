@@ -6,6 +6,7 @@ import entrega from '../views/entrega.vue'
 import estoque from '../views/estoque.vue'
 import dashboard from '../components/dashboard.vue'
 import erro from '../views/erro.vue'
+import relatorios from '../views/relatorios.vue'
 
 const routes = [
     {
@@ -31,7 +32,11 @@ const routes = [
     children: [
       { path: 'cadastro', component: cadastro },
       { path: 'entrega', component: entrega },
-      { path: 'estoque', component: estoque }
+      { path: 'estoque', component: estoque },
+      { path: 'relatorios', component: relatorios },
+      { path: 'erro', component: erro }
+
+
 
        ]
   }
