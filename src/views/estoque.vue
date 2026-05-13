@@ -173,7 +173,7 @@ input {
 .btn-add {
   width: 100%;
   padding: 0.8rem;
-  background: #2563eb;
+  background: #34495E;
   color: white;
   border: none;
   border-radius: 6px;
@@ -182,7 +182,7 @@ input {
   transition: background 0.2s;
 }
 
-.btn-add:hover { background: #1d4ed8; }
+.btn-add:hover { background: #34495E; }
 
 .table-wrapper { overflow-x: auto; }
 
@@ -205,7 +205,7 @@ td { padding: 12px; border-bottom: 1px solid #edf2f7; }
   font-weight: bold;
 }
 
-.badge.success { background: #dcfce7; color: #166534; }
+.badge.success { background: #dcfce7; color: #34495E; }
 .badge.danger { background: #fee2e2; color: #991b1b; }
 
 .alert-box.warning {

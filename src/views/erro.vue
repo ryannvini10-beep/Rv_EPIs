@@ -52,15 +52,15 @@ import { useRouter } from 'vue-router';
 const props = defineProps({
   errorCode: {
     type: String,
-    default: '404'
+    default: 'ERRO'
   },
   title: {
     type: String,
-    default: 'Página não encontrada'
+    default: 'A Página não foi encontrada'
   },
   message: {
     type: String,
-    default: 'A página que você está procurando não existe ou foi movida para um novo endereço.'
+    default: 'A página que você está procurando não foi encontrada.'
   }
 });
 

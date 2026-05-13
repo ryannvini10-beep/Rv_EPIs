@@ -2,7 +2,7 @@
   <div class="layout-container">
     
     <header class="header-section">
-      <h1>Controle de Efetivo</h1>
+      <h1>Controle de colaboradores</h1>
       <p>Gerencie o cadastro de colaboradores e organize por setores.</p>
     </header>
 
@@ -19,19 +19,19 @@
               <input v-model="form.nome" type="text" id="nome" placeholder="Digite o nome" required>
             </div>
             <div class="form-group">
-              <label for="cpf">Nº do cpf</label>
-              <input v-model="form.cpf" type="text" id="cpf" placeholder="Ex: 51908797878" required>
+              <label for="matricula">Matrícula</label>
+              <input v-model="form.matricula" type="number" id="Matricula" placeholder="Ex: 81816512" required>
             </div>
           </div>
 
           <div class="form-row">
             <div class="form-group">
-              <label for="email">email</label>
-              <input v-model="form.email" type="text" id="email" placeholder="Ex: rodrigogarro8@gmail.com" required>
+              <label for="cargo">Cargo</label>
+              <input v-model="form.cargo" type="text" id="cargo" placeholder="Ex: Analista de dados" required>
             </div>
             <div class="form-group">
-              <label for="cargo">Cargo</label>
-              <input v-model="form.cargo" type="text" id="cargo" placeholder="Ex: analista de dados" required>
+              <label for="email">Email</label>
+              <input v-model="form.email" type="email" id="email" placeholder="Ex: rodrigogarro8@gmail.com " required>
             </div>
           </div>
           
@@ -52,14 +52,14 @@
             <tr>
               <th>Colaborador</th>
               <th>Matrícula</th>
-              <th>Setor / Cargo</th>
-              <th class="text-center">Gerenciar</th>
+              <th>Cargo</th>
+              <th class="text-center">Email</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="f in funcionarios" :key="f.id">
               <td><span class="text-bold">{{ f.nome }}</span></td>
-              <td>{{ f.cpf }}</td>
+              <td>{{ f.matricula }}</td>
               <td>
                 <span class="badge">{{ f.email }}</span>
                 <span class="cargo-text">{{ f.cargo }}</span>
@@ -88,9 +88,9 @@ const funcionarios = ref([]);
 const editandoId = ref(null);
 const form = reactive({ 
   nome: '', 
-  email: '', 
-  cpf: '', 
-  cargo: '' 
+  matricula: '', 
+  cargo: '', 
+  email: '' 
 });
 
 // Busca os dados do Supabase
@@ -122,8 +122,8 @@ const prepararEdicao = (f) => {
   Object.assign(form, { 
     nome: f.nome, 
     matricula: f.matricula, 
-    setor: f.setor, 
-    cargo: f.cargo 
+    cargo: f.cargo, 
+    email: f.email 
   });
 };
 
@@ -138,7 +138,7 @@ const excluir = async (id) => {
 // Limpa o formulário e sai do modo de edição
 const cancelarEdicao = () => {
   editandoId.value = null;
-  Object.assign(form, { nome: '', matricula: '', setor: '', cargo: '' });
+  Object.assign(form, { nome: '', matricula: '', cargo: '', email: '' });
 };
 
 // Inicia a busca de dados assim que a tela abre
@@ -197,14 +197,14 @@ input {
 
 input:focus {
   outline: none;
-  border-color: #2563eb;
+  border-color: #34495E;
   box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
 }
 
 /* Botões Estilizados */
 .action-bar { display: flex; gap: 12px; }
 .btn { padding: 12px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; }
-.btn-primary { background: #2563eb; color: white; border: none; }
+.btn-primary { background: #34495E; color: white; border: none; }
 .btn-outline { background: white; color: #64748b; border: 1px solid #cbd5e1; }
 
 /* Tabela Profissional */
@@ -228,7 +228,7 @@ input:focus {
 
 .badge {
   background: #dcfce7;
-  color: #166534;
+  color: #34495E;
   padding: 4px 10px;
   border-radius: 12px;
   font-size: 0.75rem;
@@ -246,7 +246,7 @@ input:focus {
   cursor: pointer;
 }
 
-.edit { color: #2563eb; margin-right: 15px; }
+.edit { color: #34495E; margin-right: 15px; }
 .delete { color: #be123c; }
 .text-center { text-align: center; }
 

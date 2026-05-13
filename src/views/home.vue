@@ -27,13 +27,13 @@
 
         <div class="card">
           <span class="card__icone">👷</span>
-          <span class="card__numero">60</span>
+          <span class="card__numero">+80</span>
           <span class="card__label">Colaboradores</span>
         </div>
 
         <div class="card">
           <span class="card__icone">📦</span>
-          <span class="card__numero">50</span>
+          <span class="card__numero">+80</span>
           <span class="card__label">Entregas realizadas</span>
         </div>
 
@@ -50,19 +50,19 @@
           <div class="passo">
             <span class="passo__numero">1</span>
             <h3>Para cadastrar os colaboradores</h3>
-            <p>Acesse o menu "Colaboradores" e registre cada funcionário com seus dados.</p>
+            <p>Acesse "Cadastre o colaboradore" e registre cada funcionário com seus dados.</p>
           </div>
 
           <div class="passo">
             <span class="passo__numero">2</span>
             <h3>Cadastro de EPIs</h3>
-            <p>Vá em "Equipamentos" e adicione os EPIs disponíveis com validade e quantidade.</p>
+            <p>Vá em "Estoque" e adicione os EPIs disponíveis com validade e quantidade.</p>
           </div>
 
           <div class="passo">
             <span class="passo__numero">3</span>
             <h3>Registre as entregas</h3>
-            <p>Em "Entregas", vincule o EPI ao colaborador e registre a data de entrega.</p>
+            <p>Em "Entregas de EPIs", vincule o EPI ao colaborador e registre a data de entrega.</p>
           </div>
         </div>
       </section>
@@ -111,7 +111,7 @@ export default {
 .home__hero-texto h1 {
   font-size: 3rem;
   font-weight: 5;
-  color: #1daa45;
+  color: #005f56;
   margin-bottom: 2rem;
 }
 
@@ -165,7 +165,7 @@ export default {
 .card__numero {
   font-size: 1.8rem;
   font-weight: 700;
-  color: #1e3a5f;
+  color: #005f56;
 }
 
 .card__label {
@@ -206,7 +206,7 @@ export default {
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: #217539;
+  background: #005f56;
   color: #ffffff;
   font-weight: 700;
   font-size: 0.9rem;
@@ -216,7 +216,7 @@ export default {
 .passo h3 {
   font-size: 0.95rem;
   font-weight: 600;
-  color: #1e3a5f;
+  color: #005f56;
   margin-bottom: 0.4rem;
 }
 

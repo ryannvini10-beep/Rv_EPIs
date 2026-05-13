@@ -170,7 +170,7 @@ const imprimirRecibo = (entrega) => {
   padding: 1.5rem;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-  border-top: 4px solid #059669; /* Verde esmeralda */
+  border-top: 4px solid #34495E; /* Verde esmeralda */
 }
 
 .field { margin-bottom: 1rem; }
@@ -205,7 +205,7 @@ select, input {
 .btn-confirm {
   width: 100%;
   padding: 1rem;
-  background: #059669;
+  background: #34495E;
   color: white;
   border: none;
   border-radius: 4px;

@@ -5,7 +5,7 @@
     <div class="form-box">
       <!-- TÃ­tulo da pÃ¡gina -->
       <h1 class="titulo">EPIs beep</h1>
-      <p class="subtitulo">Faça o login para acessar </p>
+      <p class="subtitulo">Bem vindo (a), faça o login para acessar! </p>
 
       <!-- FormulÃ¡rio de login -->
       <!-- @submit.prevent="fazerLogin" = quando o usuÃ¡rio clica em "Entrar", chama a funÃ§Ã£o fazerLogin() -->
@@ -60,6 +60,7 @@
           <span v-else>Entrar</span>
         </button>
       </form>
+       
 
       <!-- Dica para o usuÃ¡rio -->
       <p class="dica">
@@ -244,16 +245,16 @@ body {
 /* ===== TÃTULOS ===== */
 /* TÃ­tulo principal */
 .titulo {
-  font-size: 32px;
-  color: #003D99;
+  font-size: 35px;
+  color: #005f56;
   font-weight: 700;
-  margin-bottom: 8px;
+  margin-bottom:10px;
   text-align: center;
 }
 
 /* SubtÃ­tulo */
 .subtitulo {
-  font-size: 16px;
+  font-size: 23px;
   color: #1A1A1A;
   text-align: center;
   margin-bottom: 40px;
@@ -278,9 +279,9 @@ body {
 /* ===== LABELS ===== */
 /* RÃ³tulos dos campos (E-mail, Senha) */
 .label {
-  font-size: 14px;
+  font-size: 18px;
   font-weight: 600;
-  color: #003D99;
+  color: #005f56;
 }
 
 /* ===== INPUTS ===== */
@@ -298,7 +299,7 @@ body {
 /* Quando o usuÃ¡rio clica no input, muda a borda para azul */
 .input:focus {
   outline: none;
-  border-color: #003D99;
+  border-color: #005f56;
   box-shadow: 0 0 0 3px rgba(0, 61, 153, 0.1);
 }
 
@@ -325,7 +326,7 @@ body {
 /* Estilo do botÃ£o de login */
 .botao-entrar {
   padding: 12px 24px;
-  background-color: #003D99;
+  background-color: #005f56;
   color: #FFFFFF;
   border: none;
   border-radius: 4px;
@@ -342,7 +343,7 @@ body {
 
 /* Quando passa o mouse no botÃ£o, muda a cor */
 .botao-entrar:hover:not(:disabled) {
-  background-color: #002D73;
+  background-color: #005f56;
 }
 
 /* Quando o botÃ£o estÃ¡ desabilitado (carregando), muda a aparÃªncia */

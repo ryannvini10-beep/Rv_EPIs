@@ -6,7 +6,7 @@
     </div>
 
     <div class="footer__redes">
-      <h4>Redes sociais</h4>
+      <h4></h4>
       <div class="footer__redes-links">
         <a href="https://br.linkedin.com/" class="footer__link"></a>
         <a href="https://www.instagram.com/" class="footer__link"></a>
@@ -33,7 +33,7 @@ export default {
   flex-wrap: wrap;
   gap: 2rem;
   padding: 2rem;
-  background: #217539;
+  background: #005f56;
   color: #ffffff;
 }
 
@@ -52,7 +52,7 @@ export default {
 }
 
 .footer a:hover {
-  color: #217539;
+  color: #005f56;
 }
 
 .footer__redes-links {

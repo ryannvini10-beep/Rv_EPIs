@@ -129,7 +129,7 @@ async function sair() {
 .sidebar {
   width: 250px;
   /* Largura fixa de 250px */
-  background-color: #003D99;
+  background-color: #005f56;
   /* Azul escuro como fundo */
   color: #FFFFFF;
   /* Texto branco */
@@ -157,7 +157,7 @@ async function sair() {
 /* ===== LOGO ===== */
 /* TÃ­tulo do sistema na Sidebar */
 .logo {
-  font-size: 24px;
+  font-size: 30px;
   font-weight: 700;
   color: #FFFFFF;
   margin-bottom: 40px;
