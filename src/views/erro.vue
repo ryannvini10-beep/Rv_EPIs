@@ -77,14 +77,15 @@ const refreshPage = () => {
 </script>
 
 <style scoped>
-/* Adicionando suas linhas de estilo específicas */
+/* Adicionando suas linhas de estilo específicas */ 
 .home__hero-img {
+  display: block;
   width: 40%;
   max-width: 100%;
   border-radius: 150px;
-  margin-left: 200px; /* Isso move a imagem para a direita */
-  display: block;    /* Necessário para o margin funcionar bem */
-  margin-bottom: 2rem; /* Espaçamento inferior */
+  margin-left: auto;   /* Centraliza horizontalmente */
+  margin-right: auto;  /* Centraliza horizontalmente */
+  margin-bottom: 2rem;
 }
 
 h1 {
