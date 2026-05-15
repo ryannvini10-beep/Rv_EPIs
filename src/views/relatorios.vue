@@ -1,36 +1,6 @@
 <template>
   <div class="app-layout">
-    <aside class="sidebar">
-      <div class="logo">
-        <img src="../assets/Logo_EPIatualizada.png" alt="Synaptix Logo" />
-        <span>Synaptix</span>
-      </div>
-
-      <nav class="menu">
-        <ul>
-          <li><i class="icon-dashboard"></i> Dashboard</li>
-          <li><i class="icon-inventario"></i> Inventário</li>
-          <li><i class="icon-add"></i> Adicionar EPI</li>
-          <li><i class="icon-uso"></i> EPIs em uso</li>
-          <li><i class="icon-registrar"></i> Registrar retirada</li>
-          <li class="active"><i class="icon-relatorios"></i> Relatórios</li>
-          <li><i class="icon-perfil"></i> Perfil</li>
-          <li><i class="icon-config"></i> Configurações</li>
-        </ul>
-      </nav>
-
-      <footer class="sidebar-footer">
-        <button class="btn-sair">Sair</button>
-        <div class="user-profile">
-          <img src="https://via.placeholder.com/40" alt="Julie Antrez" />
-          <div class="user-info">
-            <span class="user-name">Julie Antrez</span>
-            <span class="user-status">Conectado</span>
-          </div>
-        </div>
-      </footer>
-    </aside>
-
+    
     <main class="main-content">
       <header class="content-header">
         <h1>Relatórios</h1>
@@ -69,14 +39,31 @@
 
 <script setup>
 import { ref } from 'vue';
+import { ref, reactive, onMounted } from 'vue';
+import { useSupabase } from '../composables/useSupabase';
 
-const relatorios = ref([
-  { titulo: 'Relatório de Movimentação Mensal', descricao: 'Entradas e saídas do mês de Fevereiro 2026', icon: 'icon-move' },
-  { titulo: 'Inventário Completo', descricao: 'Lista completa de todos os EPIs em estoque', icon: 'icon-box' },
-  { titulo: 'Análise de Fornecedores', descricao: 'Comparativo de preços e qualidade dos fornecedores', icon: 'icon-cart' },
-  { titulo: 'Itens com Estoque Baixo', descricao: 'EPIs que precisam de reposição urgente', icon: 'icon-alert' }
-]);
-</script>
+const { supabase } = useSupabase();
+
+
+// Variáveis que controlam os dados na tela
+const relatorio = ref([]);
+const editandoId = ref(null);
+const form = reactive({ 
+  nome: '', 
+  matricula: '', 
+  cargo: '', 
+  email: '' 
+});
+
+// Busca os dados do Supabase
+const carregar = async () => {
+  const { data, error } = await supabase.from('relatorio').select('*').order('nome');
+  if (error) {
+    console.error("Erro ao carregar:", error.message);
+  } else {
+    relatorio.value = data || [];
+  }
+};
 
 <style scoped>
 /* Layout Base */

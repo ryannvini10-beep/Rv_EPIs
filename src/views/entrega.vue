@@ -89,20 +89,31 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue';
+import { ref, reactive, onMounted } from 'vue';
+import { useSupabase } from '../composables/useSupabase';
 
-// Dados Mockados (Simulando Banco de Dados)
-const funcionarios = ref([
-  { id: 101, nome: 'Carlos Andrade', cargo: 'Soldador' },
-  { id: 102, nome: 'Marina Silva', cargo: 'Técnica de Elétrica' }
-]);
+const { supabase } = useSupabase();
 
-const estoque = ref([
-  { id: 1, descricao: 'Luva de Vaqueta', ca: '12345', quantidade: 25 },
-  { id: 2, descricao: 'Capacete com Carneira', ca: '9876', quantidade: 10 }
-]);
 
-const historico = ref([]);
+// Variáveis que controlam os dados na tela
+const entrega = ref([]);
+const editandoId = ref(null);
+const form = reactive({ 
+  nome: '', 
+  matricula: '', 
+  cargo: '', 
+  email: '' 
+});
+
+// Busca os dados do Supabase
+const carregar = async () => {
+  const { data, error } = await supabase.from('entrega').select('*').order('nome');
+  if (error) {
+    console.error("Erro ao carregar:", error.message);
+  } else {
+    entrega.value = data || [];
+  }
+};
 
 // Estado do formulário
 const transacao = reactive({

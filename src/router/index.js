@@ -19,11 +19,15 @@ const routes = [
         name: 'erro',
         component: erro
     },
-
-    {
+{
         path: '/login',
         name: 'login',
         component: login
+    },
+{
+        path: '/relatorios',
+        name: 'relatorios',
+        component: relatorios
     },
 {
     path: '/dashboard',
@@ -33,7 +37,6 @@ const routes = [
       { path: 'cadastro', component: cadastro },
       { path: 'entrega', component: entrega },
       { path: 'estoque', component: estoque },
-      { path: 'relatorios', component: relatorios },
       { path: 'erro', component: erro }
 
 

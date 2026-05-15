@@ -80,6 +80,7 @@
 <script setup>
 import { ref, reactive, onMounted } from 'vue';
 import { useSupabase } from '../composables/useSupabase';
+
 const { supabase } = useSupabase();
 
 

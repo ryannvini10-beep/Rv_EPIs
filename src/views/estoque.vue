@@ -76,20 +76,31 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed } from 'vue';
+import { ref, reactive, onMounted } from 'vue';
+import { useSupabase } from '../composables/useSupabase';
 
-// Dados iniciais (mock)
-const estoque = ref([
-  { id: 1, descricao: 'Protetor Auricular Plug', ca: '11512', quantidade: 50, validade: '2026-10-15' },
-  { id: 2, descricao: 'Óculos de Proteção Incolor', ca: '42714', quantidade: 5, validade: '2024-05-20' }
-]);
+const { supabase } = useSupabase();
 
-const form = reactive({
-  descricao: '',
-  ca: '',
-  quantidade: null,
-  validade: ''
+
+// Variáveis que controlam os dados na tela
+const estoque = ref([]);
+const editandoId = ref(null);
+const form = reactive({ 
+  nome: '', 
+  matricula: '', 
+  cargo: '', 
+  email: '' 
 });
+
+// Busca os dados do Supabase
+const carregar = async () => {
+  const { data, error } = await supabase.from('estoque').select('*').order('nome');
+  if (error) {
+    console.error("Erro ao carregar:", error.message);
+  } else {
+    estoque.value = data || [];
+  }
+};
 
 // Lógica de cadastro
 const cadastrarEPI = () => {
