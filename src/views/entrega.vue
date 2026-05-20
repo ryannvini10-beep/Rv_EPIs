@@ -14,7 +14,7 @@
             <label for="funcionario">Colaborador:</label>
             <select id="funcionario" v-model="transacao.funcionarioId" required>
               <option value="">Selecione o funcionário...</option>
-              <option v-for="f in funcionarios" :key="f.id" :value="f.id">
+              <option v-for="f in funcionarios" :key="f.id_funcionarios" :value="f.id">
                 {{ f.nome }} ({{ f.cargo }})
               </option>
             </select>
@@ -25,7 +25,7 @@
             <select id="epi" v-model="transacao.epiId" required>
               <option value="">Selecione o item...</option>
               <option v-for="e in estoque" :key="e.id" :value="e.id">
-                {{ e.descricao }} - CA: {{ e.ca }} (Disp: {{ e.quantidade }})
+                {{ e.nome_equipamento }} - CA: {{ e.ca }} (Disp: {{ e.quantidade }})
               </option>
             </select>
           </div>
@@ -94,63 +94,119 @@ import { useSupabase } from '../composables/useSupabase';
 
 const { supabase } = useSupabase();
 
+// --- CORREÇÃO DOS ESTADOS REATIVOS EM FALTA ---
+const historico = ref([]);
+const funcionarios = ref([]);
+const estoque = ref([]);
 
-// Variáveis que controlam os dados na tela
-const entrega = ref([]);
-const editandoId = ref(null);
-const form = reactive({ 
-  nome: '', 
-  matricula: '', 
-  cargo: '', 
-  email: '' 
-});
+// Removidos os estados antigos inutilizados (entrega, editandoId, form)
 
-// Busca os dados do Supabase
-const carregar = async () => {
-  const { data, error } = await supabase.from('entrega').select('*').order('nome');
-  if (error) {
-    console.error("Erro ao carregar:", error.message);
-  } else {
-    entrega.value = data || [];
-  }
-};
-
-// Estado do formulário
+// Estado reativo do formulário
 const transacao = reactive({
   funcionarioId: '',
   epiId: '',
   quantidade: 1,
-  data: new Date().toISOString().substr(0, 10),
+  data: new Date().toISOString().substring(0, 10),
   aceitouTermo: false
 });
 
-// Lógica de Registro
-const registrarEntrega = () => {
-  const novaEntrega = {
-    id: Date.now(),
-    ...JSON.parse(JSON.stringify(transacao))
-  };
+// Busca os dados do Supabase conectando as tabelas corretas
+const carregarDados = async () => {
+  try {
+    // 1. Busca funcionários do banco
+    const { data: fData, error: fError } = await supabase.from('funcionarios').select('*').order('nome');
+    if (fError) throw fError;
+    funcionarios.value = fData || [];
 
-  // 1. Adiciona ao histórico
-  historico.value.unshift(novaEntrega);
+    // 2. Busca estoque de EPIs
+    const { data: eData, error: eError } = await supabase.from('estoque').select('*').order('nome_equipamento');
+    if (eError) throw eError;
+    estoque.value = eData || [];
 
-  // 2. Simula baixa no estoque
-  const itemEstoque = estoque.value.find(e => e.id === transacao.epiId);
-  if (itemEstoque) itemEstoque.quantidade -= transacao.quantidade;
+    // 3. Busca histórico de entregas gravadas
+    const { data: hData, error: hError } = await supabase.from('entrega').select('*').order('data', { ascending: false });
+    if (hError) throw hError;
+    historico.value = hData || [];
 
-  // 3. Reseta formulário
-  transacao.funcionarioId = '';
-  transacao.epiId = '';
-  transacao.quantidade = 1;
-  transacao.aceitouTermo = false;
-
-  alert('Entrega registrada com sucesso!');
+  } catch (error) {
+    console.error("Erro ao carregar dados do Supabase:", error.message);
+  }
 };
 
-// Funções Auxiliares
-const getNomeFuncionario = (id) => funcionarios.value.find(f => f.id === id)?.nome || 'N/A';
-const getNomeEPI = (id) => estoque.value.find(e => e.id === id)?.descricao || 'N/A';
-const formatarData = (d) => d.split('-').reverse().join('/');
+onMounted(() => {
+  carregarDados();
+});
+
+// Lógica de Registro integrada com Supabase
+const registrarEntrega = async () => {
+  const itemEstoque = estoque.value.find(e => e.id === transacao.epiId);
+  
+  if (!itemEstoque || itemEstoque.quantidade < transacao.quantidade) {
+    alert(`Quantidade insuficiente em estoque! Saldo atual: ${itemEstoque ? itemEstoque.quantidade : 0} un.`);
+    return;
+  }
+
+  try {
+    // 1. Insere a entrega no banco
+    const { data: novaEntrega, error: entregaError } = await supabase
+      .from('entrega')
+      .insert([
+        {
+          funcionarioId: transacao.funcionarioId,
+          epiId: transacao.epiId,
+          quantidade: transacao.quantidade,
+          data: transacao.data
+        }
+      ])
+      .select();
+
+    if (entregaError) throw entregaError;
+
+    // 2. Desconta a quantidade na tabela estoque do Supabase
+    const novaQuantidade = itemEstoque.quantidade - transacao.quantidade;
+    const { error: estoqueError } = await supabase
+      .from('estoque')
+      .update({ quantidade: novaQuantidade })
+      .eq('id', transacao.epiId);
+
+    if (estoqueError) throw estoqueError;
+
+    // 3. Atualiza os arrays locais reativos se a transação correu bem
+    if (novaEntrega) {
+      historico.value.unshift(novaEntrega[0]);
+      itemEstoque.quantidade = novaQuantidade;
+    }
+
+    // 4. Limpa o formulário mantendo apenas a data atualizada
+    Object.assign(transacao, {
+      funcionarioId: '',
+      epiId: '',
+      quantidade: 1,
+      data: new Date().toISOString().substring(0, 10),
+      aceitouTermo: false
+    });
+
+    alert('Entrega registrada com sucesso!');
+
+  } catch (error) {
+    console.error("Erro na transação:", error.message);
+    alert("Não foi possível salvar o registro de entrega.");
+  }
+};
+
+// Funções Auxiliares (Atualizado para buscar por id_funcionarios ou id conforme sua estrutura)
+const getNomeFuncionario = (id) => {
+  return funcionarios.value.find(f => f.id === id || f.id_funcionarios === id)?.nome || 'N/A';
+};
+
+const getNomeEPI = (id) => {
+  return estoque.value.find(e => e.id === id)?.nome_equipamento || 'N/A';
+};
+
+const formatarData = (d) => {
+  if (!d) return '---';
+  return d.split('-').reverse().join('/');
+};
 
 const imprimirRecibo = (entrega) => {
   alert(`Gerando PDF de recibo para ${getNomeFuncionario(entrega.funcionarioId)}...`);
@@ -158,6 +214,7 @@ const imprimirRecibo = (entrega) => {
 </script>
 
 <style scoped>
+/* O seu CSS permanece idêntico e intocado */
 .delivery-container {
   max-width: 1200px;
   margin: 2rem auto;
@@ -181,7 +238,7 @@ const imprimirRecibo = (entrega) => {
   padding: 1.5rem;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-  border-top: 4px solid #34495E; /* Verde esmeralda */
+  border-top: 4px solid #34495E;
 }
 
 .field { margin-bottom: 1rem; }

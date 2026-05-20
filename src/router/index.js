@@ -1,47 +1,33 @@
-import {createRouter, createWebHistory} from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 import home from '../views/home.vue'
 import login from '../views/login.vue'
 import cadastro from '../views/cadastro.vue'
 import entrega from '../views/entrega.vue'
 import estoque from '../views/estoque.vue'
 import dashboard from '../components/dashboard.vue'
-import erro from '../views/erro.vue'
-import relatorios from '../views/relatorios.vue'
 
 const routes = [
-    {
-        path: '/',
-        name: 'home',
-        component: home
-    },
-{
-        path: '/erro',
-        name: 'erro',
-        component: erro
-    },
-{
-        path: '/login',
-        name: 'login',
-        component: login
-    },
-{
-        path: '/relatorios',
-        name: 'relatorios',
-        component: relatorios
-    },
-{
+  {
+    path: '/',
+    name: 'home',
+    component: home
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: login
+  },
+  {
     path: '/dashboard',
     component: dashboard,
     meta: { requiresAuth: true },
     children: [
-      { path: 'cadastro', component: cadastro },
-      { path: 'entrega', component: entrega },
-      { path: 'estoque', component: estoque },
-      { path: 'erro', component: erro }
-
-
-
-       ]
+      
+      { path: '', name: 'dashboard-main', component: estoque }, 
+      { path: 'cadastro', name: 'cadastro', component: cadastro },
+      { path: 'entrega', name: 'entrega', component: entrega },
+      { path: 'estoque', name: 'estoque', component: estoque }
+    ] 
   }
 ]
 
