@@ -24,7 +24,7 @@
             <label for="epi">Equipamento (EPI):</label>
             <select id="epi" v-model="transacao.epiId" required>
               <option value="">Selecione o item...</option>
-              <option v-for="e in estoque" :key="e.id" :value="e.id">
+              <option v-for="e in estoque" :key="e.nome_equipamento" :value="e.id">
                 {{ e.nome_equipamento }} - CA: {{ e.ca }} (Disp: {{ e.quantidade }})
               </option>
             </select>
@@ -62,14 +62,13 @@
                 <th scope="col">Colaborador</th>
                 <th scope="col">EPI</th>
                 <th scope="col">Qtd.</th>
-                <th scope="col">Ações</th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="entrega in historico" :key="entrega.id">
                 <td>{{ formatarData(entrega.data) }}</td>
                 <td>{{ getNomeFuncionario(entrega.funcionarioId) }}</td>
-                <td>{{ getNomeEPI(entrega.epiId) }}</td>
+                <td>{{ getNomeEPI(entrega.nome_equipamento) }}</td>
                 <td>{{ entrega.quantidade }} un.</td>
                 <td>
                   <button @click="imprimirRecibo(entrega)" class="btn-icon" title="Imprimir Recibo">
@@ -104,7 +103,7 @@ const estoque = ref([]);
 // Estado reativo do formulário
 const transacao = reactive({
   funcionarioId: '',
-  epiId: '',
+  nome_equipamento: '',
   quantidade: 1,
   data: new Date().toISOString().substring(0, 10),
   aceitouTermo: false
@@ -139,7 +138,7 @@ onMounted(() => {
 
 // Lógica de Registro integrada com Supabase
 const registrarEntrega = async () => {
-  const itemEstoque = estoque.value.find(e => e.id === transacao.epiId);
+  const itemEstoque = estoque.value.find(e => e.id === transacao.nome_equipamento);
   
   if (!itemEstoque || itemEstoque.quantidade < transacao.quantidade) {
     alert(`Quantidade insuficiente em estoque! Saldo atual: ${itemEstoque ? itemEstoque.quantidade : 0} un.`);
@@ -167,7 +166,7 @@ const registrarEntrega = async () => {
     const { error: estoqueError } = await supabase
       .from('estoque')
       .update({ quantidade: novaQuantidade })
-      .eq('id', transacao.epiId);
+      .eq('id', transacao.nome_equipamento);
 
     if (estoqueError) throw estoqueError;
 

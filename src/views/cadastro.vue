@@ -57,7 +57,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="f in funcionarios" :key="f.id">
+            <tr v-for="f in funcionarios" :key="f.id_funcionarios">
               <td><span class="text-bold">{{ f.nome }}</span></td>
               <td>{{ f.matricula }}</td>
               <td>
@@ -66,7 +66,7 @@
               </td>
               <td class="text-center">
                 <button @click="prepararEdicao(f)" class="btn-action edit">Editar</button>
-                <button @click="excluir(f.id)" class="btn-action delete">Excluir</button>
+                <button @click="excluir(f.id_funcionarios)" class="btn-action delete">Excluir</button>
               </td>
             </tr>
           </tbody>
@@ -108,7 +108,7 @@ const carregar = async () => {
 const salvar = async () => {
   if (editandoId.value) {
     // Modo de Edição (Update)
-    await supabase.from('funcionarios').update(form).eq('id', editandoId.value);
+    await supabase.from('funcionarios').update(form).eq('id_funcionarios', editandoId.value);
   } else {
     // Modo de Criação (Insert)
     await supabase.from('funcionarios').insert([form]);
@@ -119,7 +119,7 @@ const salvar = async () => {
 
 // Prepara o formulário para edição ao clicar no botão
 const prepararEdicao = (f) => {
-  editandoId.value = f.id;
+  editandoId.value = f.id_funcionarios;
   Object.assign(form, { 
     nome: f.nome, 
     matricula: f.matricula, 
@@ -131,7 +131,7 @@ const prepararEdicao = (f) => {
 // Deleta um registro
 const excluir = async (id) => {
   if (confirm('Deseja realmente remover este registro?')) {
-    await supabase.from('funcionarios').delete().eq('id', id);
+    await supabase.from('funcionarios').delete().eq('id_funcionarios', id);
     carregar();
   }
 };
