@@ -52,8 +52,8 @@
             <tr>
               <th>Colaborador</th>
               <th>Matrícula</th>
-              <th>Cargo</th>
-              <th class="text-center">Email</th>
+              <th>Email</th>
+              <th class="text-center">Cargo</th>
             </tr>
           </thead>
           <tbody>

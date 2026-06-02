@@ -33,11 +33,11 @@
           <div class="grid-inputs">
             <div class="field">
               <label for="qtd-entrega">Quantidade:</label>
-              <input type="number" id="qtd-entrega" v-model.number="transacao.quantidade" min="1" required />
+              <input type="numeric" id="qtd" v-model.number="transacao.quantidade" min="1" required />
             </div>
             <div class="field">
-              <label for="data-entrega">Data de Entrega:</label>
-              <input type="date" id="data-entrega" v-model="transacao.data" required />
+              <label for="data_entrega">Data de Entrega:</label>
+              <input type="date" id="data_entrega" v-model="transacao.data" required />
             </div>
           </div>
 
@@ -67,16 +67,16 @@
             </thead>
             <tbody>
               <tr v-for="entrega in historico" :key="entrega.id">
-                <td>{{ formatarData(entrega.data) }}</td>
-                <td>{{ getNomeFuncionario(entrega.funcionarioId) }}</td>
-                <td>{{ getNomeEPI(entrega.epiId) }}</td>
-                <td>{{ entrega.quantidade }} un.</td>
-                <td>
-                  <button @click="imprimirRecibo(entrega)" class="btn-icon" title="Imprimir Recibo">
-                    🖨️
-                  </button>
-                </td>
-              </tr>
+  <td>{{ formatarData(entrega.data_entrega) }}</td>
+  <td>{{ getNomeFuncionario(entrega.id_funcionario) }}</td>
+  <td>{{ getNomeEPI(entrega.id_epi) }}</td>
+  <td>{{ entrega.qtd }} un.</td>
+  <td>
+    <button @click="imprimirRecibo(entrega)" class="btn-icon" title="Imprimir Recibo">
+      🖨️
+    </button>
+  </td>
+</tr>
               <tr v-if="historico.length === 0">
                 <td colspan="5" class="text-center">Nenhuma entrega registrada hoje.</td>
               </tr>
@@ -113,18 +113,16 @@ const transacao = reactive({
 // Busca os dados do Supabase conectando as tabelas corretas
 const carregarDados = async () => {
   try {
-    // 1. Busca funcionários do banco
     const { data: fData, error: fError } = await supabase.from('funcionarios').select('*').order('nome');
     if (fError) throw fError;
     funcionarios.value = fData || [];
 
-    // 2. Busca estoque de EPIs
     const { data: eData, error: eError } = await supabase.from('estoque').select('*').order('nome_equipamento');
     if (eError) throw eError;
     estoque.value = eData || [];
 
-    // 3. Busca histórico de entregas gravadas
-    const { data: hData, error: hError } = await supabase.from('entrega').select('*').order('data', { ascending: false });
+    // CORREÇÃO: Alterado de .order('data') para .order('data_entrega')
+    const { data: hData, error: hError } = await supabase.from('entrega').select('*').order('data_entrega', { ascending: false });
     if (hError) throw hError;
     historico.value = hData || [];
 
@@ -147,22 +145,21 @@ const registrarEntrega = async () => {
   }
 
   try {
-    // 1. Insere a entrega no banco
+    // CORREÇÃO: Nomes das chaves idênticos aos das colunas do seu banco
     const { data: novaEntrega, error: entregaError } = await supabase
       .from('entrega')
       .insert([
         {
-          funcionarioId: transacao.funcionarioId,
-          epiId: transacao.epiId,
-          quantidade: transacao.quantidade,
-          data: transacao.data
+          id_funcionario: transacao.funcionarioId,
+          id_epi: transacao.epiId,
+          qtd: transacao.quantidade,
+          data_entrega: transacao.data
         }
       ])
       .select();
 
     if (entregaError) throw entregaError;
 
-    // 2. Desconta a quantidade na tabela estoque do Supabase
     const novaQuantidade = itemEstoque.quantidade - transacao.quantidade;
     const { error: estoqueError } = await supabase
       .from('estoque')
@@ -171,13 +168,11 @@ const registrarEntrega = async () => {
 
     if (estoqueError) throw estoqueError;
 
-    // 3. Atualiza os arrays locais reativos se a transação correu bem
     if (novaEntrega) {
       historico.value.unshift(novaEntrega[0]);
       itemEstoque.quantidade = novaQuantidade;
     }
 
-    // 4. Limpa o formulário mantendo apenas a data atualizada
     Object.assign(transacao, {
       funcionarioId: '',
       epiId: '',
@@ -196,6 +191,7 @@ const registrarEntrega = async () => {
 
 // Funções Auxiliares (Atualizado para buscar por id_funcionarios ou id conforme sua estrutura)
 const getNomeFuncionario = (id) => {
+  // Aceita o id vindo da coluna id_funcionario
   return funcionarios.value.find(f => f.id === id || f.id_funcionarios === id)?.nome || 'N/A';
 };
 

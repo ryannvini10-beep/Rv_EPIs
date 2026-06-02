@@ -16,7 +16,7 @@
           <h2 id="form-title">Cadastrar novo lote</h2>
           <form @submit.prevent="cadastrarEPI">
             <div class="field">
-              <label for="descricao">nome do equipamento EPI:</label>
+              <label for="descricao">Nome do equipamento EPI:</label>
               <input type="text" id="descricao" v-model="form.nome_equipamento" placeholder="Ex: Protetor auricular" required />
             </div>
 
