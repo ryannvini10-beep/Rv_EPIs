@@ -2,7 +2,7 @@
   <main class="delivery-container">
     <header>
       <h1>Registro de Entrega de EPIs</h1>
-      <p>Formalize a entrega do equipamentos de proteção aos colaboradores.</p>
+      <p>Formalize a entrega de equipamentos de proteção aos colaboradores.</p>
     </header>
 
     <div class="delivery-grid">
@@ -14,7 +14,7 @@
             <label for="funcionario">Colaborador:</label>
             <select id="funcionario" v-model="transacao.funcionarioId" required>
               <option value="">Selecione o funcionário...</option>
-              <option v-for="f in funcionarios" :key="f.id_funcionarios" :value="f.id">
+              <option v-for="f in funcionarios" :key="f.id_funcionarios || f.id" :value="f.id || f.id_funcionarios">
                 {{ f.nome }} ({{ f.cargo }})
               </option>
             </select>
@@ -32,8 +32,8 @@
 
           <div class="grid-inputs">
             <div class="field">
-              <label for="qtd-entrega">Quantidade:</label>
-              <input type="numeric" id="qtd" v-model.number="transacao.quantidade" min="1" required />
+              <label for="qtd">Quantidade:</label>
+              <input type="number" id="qtd" v-model.number="transacao.quantidade" min="1" required />
             </div>
             <div class="field">
               <label for="data_entrega">Data de Entrega:</label>
@@ -67,16 +67,16 @@
             </thead>
             <tbody>
               <tr v-for="entrega in historico" :key="entrega.id">
-  <td>{{ formatarData(entrega.data_entrega) }}</td>
-  <td>{{ getNomeFuncionario(entrega.id_funcionario) }}</td>
-  <td>{{ getNomeEPI(entrega.id_epi) }}</td>
-  <td>{{ entrega.qtd }} un.</td>
-  <td>
-    <button @click="imprimirRecibo(entrega)" class="btn-icon" title="Imprimir Recibo">
-      🖨️
-    </button>
-  </td>
-</tr>
+                <td>{{ formatarData(entrega.data_entrega) }}</td>
+                <td>{{ getNomeFuncionario(entrega.id_funcionario) }}</td>
+                <td>{{ getNomeEPI(entrega.id_epi) }}</td>
+                <td>{{ entrega.qtd }} un.</td>
+                <td>
+                  <button @click="imprimirRecibo(entrega)" class="btn-icon" title="Imprimir Recibo">
+                    🖨️
+                  </button>
+                </td>
+              </tr>
               <tr v-if="historico.length === 0">
                 <td colspan="5" class="text-center">Nenhuma entrega registrada hoje.</td>
               </tr>
@@ -94,14 +94,12 @@ import { useSupabase } from '../composables/useSupabase';
 
 const { supabase } = useSupabase();
 
-// --- CORREÇÃO DOS ESTADOS REATIVOS EM FALTA ---
+// Estados reativos da aplicação
 const historico = ref([]);
 const funcionarios = ref([]);
 const estoque = ref([]);
 
-// Removidos os estados antigos inutilizados (entrega, editandoId, form)
-
-// Estado reativo do formulário
+// Estado do formulário sincronizado
 const transacao = reactive({
   funcionarioId: '',
   epiId: '',
@@ -110,7 +108,7 @@ const transacao = reactive({
   aceitouTermo: false
 });
 
-// Busca os dados do Supabase conectando as tabelas corretas
+// Busca dados iniciais das tabelas do Supabase
 const carregarDados = async () => {
   try {
     const { data: fData, error: fError } = await supabase.from('funcionarios').select('*').order('nome');
@@ -121,7 +119,6 @@ const carregarDados = async () => {
     if (eError) throw eError;
     estoque.value = eData || [];
 
-    // CORREÇÃO: Alterado de .order('data') para .order('data_entrega')
     const { data: hData, error: hError } = await supabase.from('entrega').select('*').order('data_entrega', { ascending: false });
     if (hError) throw hError;
     historico.value = hData || [];
@@ -135,17 +132,22 @@ onMounted(() => {
   carregarDados();
 });
 
-// Lógica de Registro integrada com Supabase
+// Cadastra a entrega no banco e abate a quantidade do estoque localmente e remotamente
 const registrarEntrega = async () => {
   const itemEstoque = estoque.value.find(e => e.id === transacao.epiId);
   
-  if (!itemEstoque || itemEstoque.quantidade < transacao.quantidade) {
-    alert(`Quantidade insuficiente em estoque! Saldo atual: ${itemEstoque ? itemEstoque.quantidade : 0} un.`);
+  if (!itemEstoque) {
+    alert("Equipamento selecionado não foi encontrado no estoque.");
+    return;
+  }
+
+  if (itemEstoque.quantidade < transacao.quantidade) {
+    alert(`Quantidade insuficiente em estoque! Saldo atual: ${itemEstoque.quantidade} un.`);
     return;
   }
 
   try {
-    // CORREÇÃO: Nomes das chaves idênticos aos das colunas do seu banco
+    // 1. Cria o registro na tabela de entregas
     const { data: novaEntrega, error: entregaError } = await supabase
       .from('entrega')
       .insert([
@@ -160,6 +162,7 @@ const registrarEntrega = async () => {
 
     if (entregaError) throw entregaError;
 
+    // 2. Desconta o saldo da tabela de estoque
     const novaQuantidade = itemEstoque.quantidade - transacao.quantidade;
     const { error: estoqueError } = await supabase
       .from('estoque')
@@ -168,11 +171,13 @@ const registrarEntrega = async () => {
 
     if (estoqueError) throw estoqueError;
 
-    if (novaEntrega) {
+    // 3. Atualiza os estados reativos locais na tela
+    if (novaEntrega && novaEntrega.length > 0) {
       historico.value.unshift(novaEntrega[0]);
       itemEstoque.quantidade = novaQuantidade;
     }
 
+    // Reseta o estado do formulário para o padrão limpo
     Object.assign(transacao, {
       funcionarioId: '',
       epiId: '',
@@ -189,9 +194,8 @@ const registrarEntrega = async () => {
   }
 };
 
-// Funções Auxiliares (Atualizado para buscar por id_funcionarios ou id conforme sua estrutura)
+// Funções Utilitárias para as listagens
 const getNomeFuncionario = (id) => {
-  // Aceita o id vindo da coluna id_funcionario
   return funcionarios.value.find(f => f.id === id || f.id_funcionarios === id)?.nome || 'N/A';
 };
 
@@ -205,12 +209,11 @@ const formatarData = (d) => {
 };
 
 const imprimirRecibo = (entrega) => {
-  alert(`Gerando PDF de recibo para ${getNomeFuncionario(entrega.funcionarioId)}...`);
+  alert(`Gerando PDF de recibo para ${getNomeFuncionario(entrega.id_funcionario)}...`);
 };
 </script>
 
 <style scoped>
-/* O seu CSS permanece idêntico e intocado */
 .delivery-container {
   max-width: 1200px;
   margin: 2rem auto;
