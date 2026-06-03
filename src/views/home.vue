@@ -73,8 +73,8 @@
 </template>
 
 <script>
-import Menu from '@/components/Menu.vue'
-import Footer from '@/components/Footer.vue'
+import Menu from '../components/menu.vue'
+import Footer from '../components/footer.vue'
 
 export default {
   name: 'Home',
