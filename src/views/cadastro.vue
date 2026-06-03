@@ -64,6 +64,7 @@
                 <span class="badge">{{ f.email }}</span>
                 <span class="cargo-text">{{ f.cargo }}</span>
               </td>
+              
               <td class="text-center">
                 <button @click="prepararEdicao(f)" class="btn-action edit">Editar</button>
                 <button @click="excluir(f.id_funcionarios)" class="btn-action delete">Excluir</button>
